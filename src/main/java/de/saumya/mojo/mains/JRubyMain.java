@@ -48,8 +48,6 @@ public class JRubyMain extends Main {
 		env.put("JARS_HOME", currentDirectory);
 		// we assume the bundled gems are placed at the root of the "archive"
 		env.put("GEM_PATH", currentDirectory);
-		// needed for jruby version before 1.7.19
-		env.put("BUNDLE_DISABLE_SHARED_GEMS", "true");
 		config.setEnvironment(env);
 		// older jruby-1.7.x does need this
     	config.setLoader(JRubyMain.class.getClassLoader());

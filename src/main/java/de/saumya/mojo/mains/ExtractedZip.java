@@ -5,11 +5,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -33,10 +36,20 @@ public class ExtractedZip {
 	}
 
 	private final File target;
+	private final List<URL> urls = new LinkedList<URL>();
 	
 	public ExtractedZip(InputStream zip) throws IOException {
+		this(zip, false);
+	}
+	
+	public ExtractedZip(InputStream zip, boolean onlyWebInfLibJars) throws IOException {
 		target = Files.createTempDirectory("jruby-mains-").toFile();
-		unzip(zip);
+		if (onlyWebInfLibJars) {
+			unzipOnlyJars(zip);			
+		}
+		else {
+			unzip(zip);
+		}
 		Runtime.getRuntime().addShutdownHook(new Thread(){
 
 			@Override
@@ -55,6 +68,25 @@ public class ExtractedZip {
 		return target;
 	}
 
+	List<URL> urls() {
+		return urls;
+	}
+
+	private void unzipOnlyJars(InputStream zip) throws IOException {
+        try(ZipInputStream is = new ZipInputStream(zip)){
+	        ZipEntry entry = is.getNextEntry();
+	        while (entry != null) {
+	        	if (!entry.isDirectory() && entry.getName().startsWith("WEB-INF/lib/") && entry.getName().endsWith(".jar")) {
+	        		File path = new File(target, entry.getName()); 
+	                extractFile(is, path);
+	            	urls.add(path.toURI().toURL());
+	            }
+	            is.closeEntry();
+	            entry = is.getNextEntry();
+	        }
+        }
+    }
+	
 	private void unzip(InputStream zip) throws IOException {
         try(ZipInputStream is = new ZipInputStream(zip)){
 	        ZipEntry entry = is.getNextEntry();
