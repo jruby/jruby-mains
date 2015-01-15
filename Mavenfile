@@ -13,3 +13,8 @@ properties 'jetty.version' => '8.1.14.v20131031', 'project.build.sourceEncoding'
 plugin :compiler, '2.3.2', :target => '1.7', :source => '1.7'
 
 properties 'tesla.dump.pom' => 'pom.xml', 'tesla.dump.readonly' => true
+
+distribution_management do
+  snapshot_repository :id => 'sonatype-nexus-snapshots', :url =>  'https://oss.sonatype.org/content/repositories/snapshots'
+  repository :id => 'sonatype-nexus-staging', :url =>  'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+end

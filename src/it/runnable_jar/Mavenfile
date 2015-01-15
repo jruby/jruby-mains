@@ -1,0 +1,79 @@
+#-*- mode: ruby -*-
+
+gemfile
+
+properties 'jruby.main' => 'de.saumya.mojo.mains.ExtractingMain'
+
+properties( 'tesla.dump.pom' => 'pom.xml',
+            'tesla.dump.readOnly' => true,
+            'jruby.plugins.version' => '1.0.8-SNAPSHOT',
+            'jruby.version' => '1.7.19-SNAPSHOT' )
+
+gem 'bundler', '1.7.12'
+
+pom 'org.jruby:jruby', '${jruby.version}'
+
+jar 'de.saumya.mojo:jruby-mains', '0.1.0-SNAPSHOT'
+
+build do
+  directory 'pkg'
+  final_name 'runnable'
+end
+
+files = [ 'config.ru', '*file', '*file.lock', '.jbundler/classpath.rb',
+          'lib/**', 'app/**', 'config/**', 'vendor/**', 'spec/**' ]
+jruby_plugin!( :gem, :includeRubygemsInResources => true ) do
+  execute_goals( 'generate-resources', 'process-resources', :includeBinStubs => true, :includeRubyResources => files )
+end
+
+if File.file?('Jarfile.lock')
+  plugin :dependency do
+    items = []
+    File.read( 'Jarfile.lock' ).each_line do |l|
+      data = l.sub(/-\ /, '').strip.split(':')
+      if data.size > 3
+        data = Hash[ [:groupId, :artifactId, :type, :version, :classifier].zip( data ) ]
+        data[ :outputDirectory ] = File.join( '${project.build.outputDirectory}',
+                                              data[:groupId].gsub(/[.]/, '/'),
+                                              data[:artifactId],
+                                              data[:version] )
+        items << data
+      end
+    end
+    execute_goal( :copy,
+                  :id => 'copy jar dependencies', :phase => 'prepare-package',
+                  :artifactItems => items )
+  end
+end
+
+plugin :shade, '2.2' do
+  execute_goals( 'shade',
+                 :id => 'pack', :phase => :package,
+                 :artifactSet => { :excludes => ['rubygems:*'] },
+                 :transformers => [ { :@implementation => 'org.apache.maven.plugins.shade.resource.ManifestResourceTransformer',
+                                      :mainClass => '${jruby.main}' } ] )
+end
+
+# test bits
+
+phase :'integration-test' do
+  # remove the rbenv bits
+  path = ENV['PATH'].split( File::PATH_SEPARATOR ).reject{ |p| p =~ /.rbenv/ }.join( File::PATH_SEPARATOR )
+  plugin( 'org.codehaus.mojo:exec-maven-plugin:1.2',
+          :executable => 'java',
+          :environmentVariables => {
+            'PATH' => path,
+            #'HOME' => null,
+            'GEM_PATH' => '${basedir}',
+            'GEM_HOME' => '${basedir}'
+          } ) do
+    
+    execute_goal( :exec, :id => 'rake -T',
+                  :arguments => [ '-jar', 'pkg/runnable.jar', '-S', 'rake', '-T' ] )
+    
+    execute_goal( :exec, :id => 'rspec',
+                  :arguments => [ '-jar', 'pkg/runnable.jar', '-S', 'rake', 'spec' ] )
+    
+  end
+end
+ 
