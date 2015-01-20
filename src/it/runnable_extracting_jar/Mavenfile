@@ -2,7 +2,7 @@
 
 gemfile
 
-properties 'jruby.main' => 'de.saumya.mojo.mains.JarMain'
+properties 'jruby.main' => 'de.saumya.mojo.mains.ExtractingMain'
 
 properties( 'tesla.dump.pom' => 'pom.xml',
             'tesla.dump.readOnly' => true,
@@ -60,7 +60,6 @@ phase :'integration-test' do
   plugin( 'org.codehaus.mojo:exec-maven-plugin:1.2',
           :executable => 'java',
           :environmentVariables => {
-            'PATH' => 'path',
             'HOME' => 'blabla',
             'GEM_PATH' => '${basedir}',
             'GEM_HOME' => '${basedir}'
@@ -70,7 +69,7 @@ phase :'integration-test' do
                   :arguments => [ '-jar', 'pkg/runnable.jar', '-S', 'rake', '-T' ] )
     
     execute_goal( :exec, :id => 'rspec',
-                  :arguments => [ '-jar', 'pkg/runnable.jar', '-S', 'rspec' ] )
+                  :arguments => [ '-jar', 'pkg/runnable.jar', '-S', 'rake', 'spec' ] )
     
   end
 end

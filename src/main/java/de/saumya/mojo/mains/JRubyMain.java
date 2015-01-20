@@ -48,10 +48,15 @@ public class JRubyMain extends Main {
         config.setCurrentDirectory(currentDirectory);
         config.setJRubyHome(currentDirectory + "/META-INF/jruby.home");
         Map<String, String> env = new HashMap<String, String>(System.getenv());
-        // we assume the embedded jars are placed at the root of the "archive"
+	// we assume the embedded jars are placed at the root of the "archive"
         env.put("JARS_HOME", currentDirectory);
         // we assume the embedded gems are placed at the root of the "archive"
         env.put("GEM_PATH", currentDirectory);
+
+	// for spawning jruby we need bundler to tell to 
+	// NOT clean up the load Path
+	env.put("BUNDLE_DISABLE_SHARED_GEMS", "true");
+
         config.setEnvironment(env);
         // older jruby-1.7.x does need this
         config.setLoader(JRubyMain.class.getClassLoader());

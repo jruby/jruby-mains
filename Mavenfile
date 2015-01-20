@@ -18,3 +18,10 @@ distribution_management do
   snapshot_repository :id => 'sonatype-nexus-snapshots', :url =>  'https://oss.sonatype.org/content/repositories/snapshots'
   repository :id => 'sonatype-nexus-staging', :url =>  'https://oss.sonatype.org/service/local/staging/deploy/maven2'
 end
+
+plugin :invoker, '1.8' do
+  execute_goals( :install, :run,
+                 :id => 'integration-test',
+                 :streamLogs => true,
+                 :cloneProjectsTo => '${project.build.directory}' )
+end

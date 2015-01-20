@@ -3,13 +3,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>no_group_id_given</groupId>
-  <artifactId>runnable_jar</artifactId>
+  <artifactId>runnable_extracting_jar</artifactId>
   <version>0.0.0</version>
-  <name>runnable_jar</name>
+  <name>runnable_extracting_jar</name>
   <properties>
     <tesla.dump.readOnly>true</tesla.dump.readOnly>
     <jruby.version>1.7.19-SNAPSHOT</jruby.version>
-    <jruby.main>de.saumya.mojo.mains.JarMain</jruby.main>
+    <jruby.main>de.saumya.mojo.mains.ExtractingMain</jruby.main>
     <jruby.plugins.version>1.0.8-SNAPSHOT</jruby.plugins.version>
     <tesla.dump.pom>pom.xml</tesla.dump.pom>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
@@ -184,7 +184,8 @@
                 <argument>-jar</argument>
                 <argument>pkg/runnable.jar</argument>
                 <argument>-S</argument>
-                <argument>rspec</argument>
+                <argument>rake</argument>
+                <argument>spec</argument>
               </arguments>
             </configuration>
           </execution>
@@ -192,7 +193,6 @@
         <configuration>
           <executable>java</executable>
           <environmentVariables>
-            <PATH>path</PATH>
             <HOME>blabla</HOME>
             <GEM_PATH>${basedir}</GEM_PATH>
             <GEM_HOME>${basedir}</GEM_HOME>
