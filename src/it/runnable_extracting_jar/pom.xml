@@ -166,7 +166,7 @@
             <configuration>
               <arguments>
                 <argument>-jar</argument>
-                <argument>pkg/runnable.jar</argument>
+                <argument>runnable.jar</argument>
                 <argument>-S</argument>
                 <argument>rake</argument>
                 <argument>-T</argument>
@@ -182,7 +182,7 @@
             <configuration>
               <arguments>
                 <argument>-jar</argument>
-                <argument>pkg/runnable.jar</argument>
+                <argument>runnable.jar</argument>
                 <argument>-S</argument>
                 <argument>rake</argument>
                 <argument>spec</argument>
@@ -192,6 +192,7 @@
         </executions>
         <configuration>
           <executable>java</executable>
+          <workingDirectory>${project.build.directory}</workingDirectory>
           <environmentVariables>
             <HOME>blabla</HOME>
             <GEM_PATH>${basedir}</GEM_PATH>

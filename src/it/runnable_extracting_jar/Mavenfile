@@ -59,6 +59,7 @@ end
 phase :'integration-test' do
   plugin( 'org.codehaus.mojo:exec-maven-plugin:1.2',
           :executable => 'java',
+          :workingDirectory => '${project.build.directory}',
           :environmentVariables => {
             'HOME' => 'blabla',
             'GEM_PATH' => '${basedir}',
@@ -66,10 +67,10 @@ phase :'integration-test' do
           } ) do
     
     execute_goal( :exec, :id => 'rake -T',
-                  :arguments => [ '-jar', 'pkg/runnable.jar', '-S', 'rake', '-T' ] )
+                  :arguments => [ '-jar', 'runnable.jar', '-S', 'rake', '-T' ] )
     
     execute_goal( :exec, :id => 'rspec',
-                  :arguments => [ '-jar', 'pkg/runnable.jar', '-S', 'rake', 'spec' ] )
+                  :arguments => [ '-jar', 'runnable.jar', '-S', 'rake', 'spec' ] )
     
   end
 end
