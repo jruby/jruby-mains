@@ -1,0 +1,85 @@
+#-*- mode: ruby -*-
+
+gemfile
+
+packaging 'war'
+
+properties 'jruby.main' => 'de.saumya.mojo.mains.WarMain'
+
+properties( 'tesla.dump.pom' => 'pom.xml',
+            'tesla.dump.readOnly' => true,
+            'jruby.plugins.version' => '1.0.8-SNAPSHOT',
+            'jruby.version' => '1.7.19-SNAPSHOT',
+            'maven.war.webxml' => 'config/web.xml' )
+
+gem 'bundler', '1.7.12'
+
+pom 'org.jruby:jruby', '${jruby.version}'
+
+jar 'de.saumya.mojo:jruby-mains', '@project.version@'
+
+build do
+  directory 'pkg'
+  final_name 'runnable'
+end
+
+files = [ 'config.ru', '*file', '*file.lock', '.jbundler/classpath.rb',
+          'lib/**', 'app/**', 'config/**', 'vendor/**', 'spec/**' ]
+jruby_plugin!( :gem, :includeRubygemsInResources => true ) do
+  execute_goals( 'generate-resources', 'process-resources', :includeBinStubs => true, :includeRubyResources => files )
+end
+
+plugin :dependency, '2.5.1' do
+  items = []
+  File.read( 'Jarfile.lock' ).each_line do |l|
+    data = l.sub(/-\ /, '').strip.split(':')
+    if data.size > 3
+      data = Hash[ [:groupId, :artifactId, :type, :version, :classifier].zip( data ) ]
+      data[ :outputDirectory ] = File.join( '${project.build.outputDirectory}',
+                                            data[:groupId].gsub(/[.]/, '/'),
+                                            data[:artifactId],
+                                            data[:version] )
+      items << data
+    end
+  end
+  execute_goal( :copy,
+                :id => 'copy jar dependencies', :phase => 'prepare-package',
+                :artifactItems => items )
+  execute_goal( 'unpack-dependencies',
+                :phase => 'prepare-package',
+                :id => 'pack jruby',
+                :includeGroupIds => 'de.saumya.mojo',
+                :excludes => '*, about_files/*, META-INF/*',
+                :outputDirectory => '${project.build.directory}/${project.build.finalName}' )           
+end
+
+resource do
+  targetPath '${project.build.directory}/${project.build.finalName}/META-INF/jruby.home'
+  directory '${project.build.directory}/rubygems'
+  includes ['bin/*']
+end
+
+plugin :war, '2.2', :archive => { :manifest => { :mainClass => '${jruby.main}' } }
+
+# test bits
+
+phase :'integration-test' do
+  plugin( 'org.codehaus.mojo:exec-maven-plugin:1.2',
+          :executable => 'java',
+          :workingDirectory => '${project.build.directory}',
+          :environmentVariables => {
+            'PATH' => 'path',
+            'HOME' => 'blabla',
+            'GEM_PATH' => '${basedir}',
+            'GEM_HOME' => '${basedir}'
+          } ) do
+    
+    execute_goal( :exec, :id => 'rake -T',
+                  :arguments => [ '-jar', 'runnable.war', '-S', 'rake', '-T' ] )
+    
+    execute_goal( :exec, :id => 'rspec',
+                  :arguments => [ '-jar', 'runnable.war', '-S', 'rspec' ] )
+    
+  end
+end
+ 

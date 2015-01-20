@@ -11,12 +11,14 @@ public class WarMain extends AbstractLauncher {
         new WarMain().launch(args);
     }
     
-    String processJar(URL jarFile, List<URL> urls) throws IOException {
+    Config processJar(URL jarFile, List<URL> urls) throws IOException {
         urls.add(jarFile);
         try (InputStream is = jarFile.openStream()) {
             ExtractedZip extractedZip = new ExtractedZip(is, true);
             urls.addAll(extractedZip.urls());
         }
-        return "uri:classloader://WEB-INF/classes";
+        return new Config("uri:classloader://WEB-INF/classes", 
+                          "uri:classloader://META-INF/jruby.home",
+                          null);
     }
 }

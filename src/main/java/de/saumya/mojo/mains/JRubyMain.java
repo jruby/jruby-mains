@@ -12,9 +12,9 @@ import org.jruby.exceptions.RaiseException;
 import org.jruby.runtime.ThreadContext;
 
 public class JRubyMain extends Main {
-    
-    public static void main(String currentDir, String... args) {
-        JRubyMain main = new JRubyMain(currentDir);
+
+    public static void main(String bundleDisableSharedGems, String currentDir, String jrubyHome, String... args) {
+        JRubyMain main = new JRubyMain(bundleDisableSharedGems, currentDir, jrubyHome);
         try {
             Status status = main.run(args);
             if (status.isExit()) {
@@ -37,25 +37,27 @@ public class JRubyMain extends Main {
         }
     }
     
-    JRubyMain(String currentDirectory) {
-        this(currentDirectory, new RubyInstanceConfig());
+    JRubyMain(String bundleDisableSharedGems, String currentDirectory, String jrubyHome) {
+        this(bundleDisableSharedGems, currentDirectory, jrubyHome, new RubyInstanceConfig());
     }
     
-    JRubyMain(String currentDirectory, RubyInstanceConfig config) {
+    JRubyMain(String bundleDisableSharedGems, String currentDirectory, String jrubyHome, RubyInstanceConfig config) {
         super(config);
         // TODO have property to disable hard exit - see warbler
         config.setHardExit(true);
         config.setCurrentDirectory(currentDirectory);
-        config.setJRubyHome(currentDirectory + "/META-INF/jruby.home");
+        config.setJRubyHome(jrubyHome);
         Map<String, String> env = new HashMap<String, String>(System.getenv());
-	// we assume the embedded jars are placed at the root of the "archive"
+        // we assume the embedded jars are placed at the root of the "archive"
         env.put("JARS_HOME", currentDirectory);
         // we assume the embedded gems are placed at the root of the "archive"
         env.put("GEM_PATH", currentDirectory);
 
-	// for spawning jruby we need bundler to tell to 
-	// NOT clean up the load Path
-	env.put("BUNDLE_DISABLE_SHARED_GEMS", "true");
+        if (bundleDisableSharedGems != null) {
+            // for spawning jruby we need bundler to tell to
+            // NOT clean up the load Path
+            env.put("BUNDLE_DISABLE_SHARED_GEMS", bundleDisableSharedGems);
+        }
 
         config.setEnvironment(env);
         // older jruby-1.7.x does need this

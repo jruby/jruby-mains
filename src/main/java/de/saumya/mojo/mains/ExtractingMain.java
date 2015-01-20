@@ -12,7 +12,7 @@ public class ExtractingMain extends AbstractLauncher {
         new ExtractingMain().launch(args);
     }
     
-    String processJar(URL jarFile, List<URL> urls) throws IOException {
+    Config processJar(URL jarFile, List<URL> urls) throws IOException {
         final File dir;
         try (InputStream is = jarFile.openStream()) {
             ExtractedZip extractedZip = new ExtractedZip(is);
@@ -31,6 +31,6 @@ public class ExtractingMain extends AbstractLauncher {
                 dir = extractedZip.directory();
             }
         }
-        return dir.getAbsolutePath();
+        return new Config(dir.getAbsolutePath());
     }
 }

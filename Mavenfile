@@ -22,6 +22,7 @@ end
 plugin :invoker, '1.8' do
   execute_goals( :install, :run,
                  :id => 'integration-test',
+                 :goals => [:verify],
                  :streamLogs => true,
                  :cloneProjectsTo => '${project.build.directory}' )
 end

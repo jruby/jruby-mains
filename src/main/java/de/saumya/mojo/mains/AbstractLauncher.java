@@ -14,12 +14,12 @@ public abstract class AbstractLauncher {
     void launch(String... args) throws Exception {
         List<URL> urls = new LinkedList<URL>();
         
-        String workingDir = processJar(jarLocation(), urls);
-        
-        launchIt(urls, workingDir, args);
+        Config config = processJar(jarLocation(), urls);
+
+        launchIt(urls, config, args);
     }
     
-    abstract String processJar(URL location, List<URL> urls) throws IOException;
+    abstract Config processJar(URL location, List<URL> urls) throws IOException;
     
     URL jarLocation() {
         ProtectionDomain protectionDomain = AbstractLauncher.class
@@ -27,17 +27,18 @@ public abstract class AbstractLauncher {
         return protectionDomain.getCodeSource().getLocation();
     }
     
-    void launchIt(List<URL> classloaderUrls, String workingDir, String... args)
+    void launchIt(List<URL> classloaderUrls, Config config, String... args)
             throws ClassNotFoundException, NoSuchMethodException,
             IllegalAccessException, InvocationTargetException, IOException {
+        //TODO debug: System.err.println(classloaderUrls);
         // we want to have a clean classloader hierarchy without this
         // classloader involved
         try (URLClassLoader loader = new URLClassLoader(
                 classloaderUrls.toArray(new URL[classloaderUrls.size()]),
                 ClassLoader.getSystemClassLoader().getParent())) {
             Class<?> main = loader.loadClass("de.saumya.mojo.mains.JRubyMain");
-            Method m = main.getMethod("main", String.class, args.getClass());
-            m.invoke(main, workingDir, (Object[]) args);
+            Method m = main.getMethod("main", String.class, String.class, String.class, args.getClass());
+            m.invoke(main, config.bundleDisableSharedGems, config.workingDirectory, config.jrubyHome, (Object[]) args);
         }
     }
 }
