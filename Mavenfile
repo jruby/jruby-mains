@@ -3,7 +3,7 @@
 id 'de.saumya.mojo:jruby-mains:0.1.0-SNAPSHOT'
 
 scope :provided do
-  pom 'org.jruby:jruby:1.7.18'
+  pom 'org.jruby:jruby:1.7.19'
   jar 'org.eclipse.jetty:jetty-server:${jetty.version}'
   jar 'org.eclipse.jetty:jetty-webapp:${jetty.version}'
 end

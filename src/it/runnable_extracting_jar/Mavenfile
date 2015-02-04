@@ -6,8 +6,8 @@ properties 'jruby.main' => 'de.saumya.mojo.mains.ExtractingMain'
 
 properties( 'tesla.dump.pom' => 'pom.xml',
             'tesla.dump.readOnly' => true,
-            'jruby.plugins.version' => '1.0.8-SNAPSHOT',
-            'jruby.version' => '1.7.19-SNAPSHOT' )
+            'jruby.plugins.version' => '1.0.8',
+            'jruby.version' => '1.7.19' )
 
 gem 'bundler', '1.7.12'
 

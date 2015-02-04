@@ -8,9 +8,9 @@
   <name>runnable_extracting_jar</name>
   <properties>
     <tesla.dump.readOnly>true</tesla.dump.readOnly>
-    <jruby.version>1.7.19-SNAPSHOT</jruby.version>
+    <jruby.version>1.7.19</jruby.version>
     <jruby.main>de.saumya.mojo.mains.ExtractingMain</jruby.main>
-    <jruby.plugins.version>1.0.8-SNAPSHOT</jruby.plugins.version>
+    <jruby.plugins.version>1.0.8</jruby.plugins.version>
     <tesla.dump.pom>pom.xml</tesla.dump.pom>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
   </properties>
