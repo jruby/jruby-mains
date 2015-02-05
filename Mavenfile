@@ -2,6 +2,10 @@
 
 id 'de.saumya.mojo:jruby-mains:0.1.0-SNAPSHOT'
 
+repository( :id => 'rso-public-grid',
+            :url => 'https://repository.sonatype.org/content/groups/sonatype-public-grid',
+            :releases => true, :snapshots => true )
+
 scope :provided do
   pom 'org.jruby:jruby:1.7.19'
   jar 'org.eclipse.jetty:jetty-server:${jetty.version}'
