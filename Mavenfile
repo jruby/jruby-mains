@@ -1,10 +1,20 @@
 #-*- mode: ruby -*-
 
-id 'de.saumya.mojo:jruby-mains:0.1.0-SNAPSHOT'
+id 'de.saumya.mojo:jruby-mains:0.1.0'
 
 repository( :id => 'rso-public-grid',
             :url => 'https://repository.sonatype.org/content/groups/sonatype-public-grid',
             :releases => true, :snapshots => true )
+
+license :name => 'MIT'
+
+developer( :name => 'Christian Meier',
+           :email => 'm.kristian@web.de' )
+
+github = 'mkristian/jruby-mains'
+scm( :developerConnection => "scm:git:ssh://git@github.com:#{github}.git",
+     :connection => "scm:git:https://github.com/#{github}.git",
+     :url => "https://github.com/#{github}" )
 
 scope :provided do
   pom 'org.jruby:jruby:1.7.19'
