@@ -22,7 +22,12 @@ public class JRubyMain extends Main {
             }
         }
         catch (RaiseException rj) {
-            System.exit(-1);// TODO handleRaiseException(rj));
+            try {
+                System.exit(handleRaiseException(rj));
+            }
+            catch( Throwable e ){
+                System.exit(-1);
+            }
         }
         catch (Throwable t) {
             // print out as a nice Ruby backtrace

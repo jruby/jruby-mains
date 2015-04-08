@@ -20,7 +20,7 @@ url 'http://github.com/#{github}'
 description 'a set of main method to launch a jruby application from within a jar or war file or start jetty as executable'
 
 scope :provided do
-  pom 'org.jruby:jruby:1.7.19'
+  pom 'org.jruby:jruby:1.7.20-SNAPSHOT'
   jar 'org.eclipse.jetty:jetty-server:${jetty.version}'
   jar 'org.eclipse.jetty:jetty-webapp:${jetty.version}'
 end

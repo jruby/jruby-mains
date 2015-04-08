@@ -2,31 +2,55 @@
 
 ## vision
 
-* vendor your gems into ./vendor
+* install your gem and jar dependencies into ./tmp
 * pack the whole application as it into jar file
 * run the application from the jar
 
-jruby does provide this:
+### current situation
 
-    JARS_HOME=vendor GEMS_HOME=vendor GEMS_PATH=vendor bundle install
+NOTE: at the time of writing you need to use jruby-complete.jar from [https://oss.sonatype.org/content/repositories/snapshots/org/jruby/jruby-complete/1.7.20-SNAPSHOT/](https://oss.sonatype.org/content/repositories/snapshots/org/jruby/jruby-complete/1.7.20-SNAPSHOT/) for the examples. jruby-mains itself work with old jruby versions.
+
+first pack all the gem and jar dependencies into one jar:
+
+	export JARS_HOME=/tmp/app/jars
+	export GEM_HOME=/tmp/app
+	export GEM_PATH=/tmp/app
+	gem install bundler
+	bundle install
+
+	rmdir /tmp/app/doc /tmp/app/extensions /tmp/app/build_info
+	rm -rf /tmp/app/cache
+	jar -cvf gems.jar -C /tmp/app .
+
+now pack the application:
+
 	jar -cvf application.jar .
 
-not run it with
+now run the uber-jar with
 
-	export JARS_HOME=uri:classloader:/vendor
-	export GEMS_HOME=uri:classloader:/vendor
-	export GEMS_PATH=uri:classloader:/vendor
-	java -cp application.jar:jruby-complete.jar org.jruby.Main -C uri:classloader:/ vendor/bin/rackup
+	java -cp application.jar:gems.jar:jruby-complete.jar org.jruby.Main -C uri:classloader:/ -S rackup
 
-this is the same execution then
+this is equivalent to
 
-    java -jar jruby-complete.jar -C uri:classloader:/ vendor/bin/rackup
+	java -cp .:gems.jar:jruby-complete.jar org.jruby.Main -C uri:classloader:/ -S rackup
 
-the only difference is where the application loaded from but the current working directory is always at the root of the classloader.
+or very close to
+
+	java -cp .:gems.jar:jruby-complete.jar org.jruby.Main -C . -S rackup
+
+the last can be reduced to (since ```GEM_PATH``` and ```JARS_HOME``` needs to be set)
+
+    java -jar jruby-complete.jar $GEM_PATH/bin/rackup
+
+the only difference is from where the application is loaded and where the current directory (-C) is pointing to. 
+
+note: if ```GEM_PATH``` and ```JARS_HOME``` are not set then JRuby is looking for gems and jars in ```uri:classloader:/```.
+
+ideally bundler should be only development dependency and then can be excluded.
 
 ## what about war files ?
 
-well just put the jruby-complete.jar, jruby-rack.jar and the application.jar into **WEB-INF/lib** and configure your **WEB-INF/web.xml** to use the classpath-layout
+well just put the jruby-complete.jar, jruby-rack.jar, application.jar and the gems.jar into **WEB-INF/lib** and configure your **WEB-INF/web.xml** to use the classpath-layout
 
     <web-app>
       <context-param>
@@ -48,9 +72,9 @@ well just put the jruby-complete.jar, jruby-rack.jar and the application.jar int
       </listener>
     </web-app>
 
-then the web-application uses the same loading as the standalone execution.
+then the web-application uses the same loading semantic as the standalone execution.
 
-of course you can just unpack the application.jar into **WEB-INF/classes** which does not make a difference since at both location all the ruby sources are loaded via the classloader.
+of course you can just unpack the application.jar into **WEB-INF/classes** which does not make a difference since from both location all the ruby sources are loaded via the jruby-classloader.
 
 ## using jruby-mains
 
