@@ -2,9 +2,10 @@
 
 ## vision
 
-* install your gem and jar dependencies into ./tmp
-* pack the whole application as it into jar file
-* run the application from the jar
+* install your gem and jar dependencies into some directory /tmp/myapp
+* pack the gems + jars into gems.jar
+* pack the whole application as it into application.jar
+* run the application from these jars or put them along jruby.jar and jruby-rack.jar into WEB-INF/lib
 
 ### current situation
 
@@ -26,15 +27,15 @@ now pack the application:
 
 	jar -cvf application.jar .
 
-now run the uber-jar with
+now run these jars with
 
 	java -cp application.jar:gems.jar:jruby-complete.jar org.jruby.Main -C uri:classloader:/ -S rackup
 
-this is equivalent to
+this is equivalent to (here the classloader finds the application on the classpath ".")
 
 	java -cp .:gems.jar:jruby-complete.jar org.jruby.Main -C uri:classloader:/ -S rackup
 
-or very close to
+or very close to (the current directory is on the file system and not inside the classloader)
 
 	java -cp .:gems.jar:jruby-complete.jar org.jruby.Main -C . -S rackup
 
@@ -50,7 +51,7 @@ ideally bundler should be only development dependency and then can be excluded.
 
 ## what about war files ?
 
-well just put the jruby-complete.jar, jruby-rack.jar, application.jar and the gems.jar into **WEB-INF/lib** and configure your **WEB-INF/web.xml** to use the classpath-layout
+just put the jruby-complete.jar, jruby-rack.jar, application.jar and the gems.jar into **WEB-INF/lib** and configure your **WEB-INF/web.xml** to use the classpath-layout
 
     <web-app>
       <context-param>
@@ -74,7 +75,7 @@ well just put the jruby-complete.jar, jruby-rack.jar, application.jar and the ge
 
 then the web-application uses the same loading semantic as the standalone execution.
 
-of course you can just unpack the application.jar into **WEB-INF/classes** which does not make a difference since from both location all the ruby sources are loaded via the jruby-classloader.
+of course you can just unpack the gems.jar and application.jar into **WEB-INF/classes** which does not make a difference since from both location all the ruby sources are loaded via the jruby-classloader.
 
 ## using jruby-mains
 
