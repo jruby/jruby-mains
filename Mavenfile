@@ -1,6 +1,6 @@
 #-*- mode: ruby -*-
 
-id 'de.saumya.mojo:jruby-mains:0.1.1-SNAPSHOT'
+id 'de.saumya.mojo:jruby-mains:0.2.0'
 
 repository( :id => 'rso-public-grid',
             :url => 'https://repository.sonatype.org/content/groups/sonatype-public-grid',
@@ -20,12 +20,13 @@ url 'http://github.com/#{github}'
 description 'a set of main method to launch a jruby application from within a jar or war file or start jetty as executable'
 
 scope :provided do
-  pom 'org.jruby:jruby:1.7.20-SNAPSHOT'
+  jar 'org.jruby:jruby:${jruby.version}'
   jar 'org.eclipse.jetty:jetty-server:${jetty.version}'
   jar 'org.eclipse.jetty:jetty-webapp:${jetty.version}'
 end
 
-properties( 'jetty.version' => '8.1.14.v20131031',
+properties( 'jruby.version' => '1.7.19',
+            'jetty.version' => '8.1.14.v20131031',
             'project.build.sourceEncoding' => 'utf-8',
             'polyglot.dump.pom' => 'pom.xml' )
 
@@ -65,7 +66,7 @@ plugin :invoker, '1.8' do
                  :cloneProjectsTo => '${project.build.directory}/it',
                  :properties => { 'artifact.version' => '${project.version}',
                    'jruby.version' => '${jruby.version}',
-                   'jruby.plugins.version' => '${jruby.plugins.version}',
+                   'jruby.plugins.version' => '1.0.9',
                    'bundler.version' => '1.9.2',
                    # dump pom for the time being - for travis
                    'polyglot.dump.pom' => 'pom.xml'} )
