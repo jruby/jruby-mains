@@ -7,18 +7,19 @@
   <version>0.0.0</version>
   <name>runnable_jar</name>
   <properties>
-    <tesla.dump.readOnly>true</tesla.dump.readOnly>
     <jruby.version>1.7.19</jruby.version>
+    <bundler.version>1.9.2</bundler.version>
     <jruby.main>de.saumya.mojo.mains.JarMain</jruby.main>
-    <jruby.plugins.version>1.0.8</jruby.plugins.version>
-    <tesla.dump.pom>pom.xml</tesla.dump.pom>
+    <gem.path>${gem.home}</gem.path>
+    <gem.home>${basedir}/../rubygems</gem.home>
+    <jruby.plugins.version>1.0.9</jruby.plugins.version>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
     <dependency>
       <groupId>rubygems</groupId>
       <artifactId>bundler</artifactId>
-      <version>1.7.12</version>
+      <version>${bundler.version}</version>
       <type>gem</type>
     </dependency>
     <dependency>
@@ -30,7 +31,7 @@
     <dependency>
       <groupId>de.saumya.mojo</groupId>
       <artifactId>jruby-mains</artifactId>
-      <version>@project.version@</version>
+      <version>${artifact.version}</version>
     </dependency>
   </dependencies>
   <repositories>

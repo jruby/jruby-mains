@@ -3,22 +3,23 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>no_group_id_given</groupId>
-  <artifactId>runnable_extracting_jar</artifactId>
+  <artifactId>runnable_jar_extracting</artifactId>
   <version>0.0.0</version>
-  <name>runnable_extracting_jar</name>
+  <name>runnable_jar_extracting</name>
   <properties>
-    <tesla.dump.readOnly>true</tesla.dump.readOnly>
     <jruby.version>1.7.19</jruby.version>
+    <bundler.version>1.9.2</bundler.version>
     <jruby.main>de.saumya.mojo.mains.ExtractingMain</jruby.main>
-    <jruby.plugins.version>1.0.8</jruby.plugins.version>
-    <tesla.dump.pom>pom.xml</tesla.dump.pom>
+    <gem.path>${gem.home}</gem.path>
+    <gem.home>${basedir}/../rubygems</gem.home>
+    <jruby.plugins.version>1.0.9</jruby.plugins.version>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
     <dependency>
       <groupId>rubygems</groupId>
       <artifactId>bundler</artifactId>
-      <version>1.7.12</version>
+      <version>${bundler.version}</version>
       <type>gem</type>
     </dependency>
     <dependency>
@@ -30,7 +31,7 @@
     <dependency>
       <groupId>de.saumya.mojo</groupId>
       <artifactId>jruby-mains</artifactId>
-      <version>@project.version@</version>
+      <version>${artifact.version}</version>
     </dependency>
   </dependencies>
   <repositories>
@@ -174,7 +175,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>rspec</id>
+            <id>rake spec</id>
             <phase>integration-test</phase>
             <goals>
               <goal>exec</goal>
@@ -186,6 +187,21 @@
                 <argument>-S</argument>
                 <argument>rake</argument>
                 <argument>spec</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>rspec</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <arguments>
+                <argument>-jar</argument>
+                <argument>runnable.jar</argument>
+                <argument>-S</argument>
+                <argument>rspec</argument>
               </arguments>
             </configuration>
           </execution>
