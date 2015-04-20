@@ -97,7 +97,8 @@
                 <goal>verify</goal>
               </goals>
               <streamLogs>true</streamLogs>
-              <cloneProjectsTo>${project.build.directory}</cloneProjectsTo>
+              <postBuildHookScript>verify.bsh</postBuildHookScript>
+              <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
               <properties>
                 <artifact.version>${project.version}</artifact.version>
                 <jruby.version>${jruby.version}</jruby.version>

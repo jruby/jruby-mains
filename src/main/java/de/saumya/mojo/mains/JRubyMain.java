@@ -13,10 +13,30 @@ import org.jruby.runtime.ThreadContext;
 
 public class JRubyMain extends Main {
 
+    public static final String JAR_BOOTSTRAP = "jar-bootstrap.rb";
+    public static final String META_INF_JAR_BOOTSTRAP = "META-INF/jar-bootstrap.rb";
+
+    private static String[] addBootstrap(String... args){
+        String bootstrap = null;
+        if (JRubyMain.class.getClassLoader().getResource(JAR_BOOTSTRAP) != null) {
+            bootstrap = "classpath:" + JAR_BOOTSTRAP;
+        }
+        else if (JRubyMain.class.getClassLoader().getResource(META_INF_JAR_BOOTSTRAP) != null) {
+            bootstrap = "classpath:" + META_INF_JAR_BOOTSTRAP;
+        }
+        if (bootstrap == null) {
+            return args;
+        }
+        String[] newArgs = new String[args.length + 1];
+        newArgs[0] = bootstrap;
+        System.arraycopy(args, 0, newArgs, 1, args.length);
+        return newArgs;
+    }
+
     public static void main(String bundleDisableSharedGems, String currentDir, String jrubyHome, String... args) {
         JRubyMain main = new JRubyMain(bundleDisableSharedGems, currentDir, jrubyHome);
         try {
-            Status status = main.run(args);
+            Status status = main.run(addBootstrap(args));
             if (status.isExit()) {
                 System.exit(status.getStatus());
             }
