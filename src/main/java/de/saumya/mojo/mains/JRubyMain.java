@@ -43,7 +43,7 @@ public class JRubyMain extends Main {
         }
         catch (RaiseException rj) {
             try {
-                System.exit(handleRaiseException(rj));
+                System.exit(-1);//handleRaiseException(rj));
             }
             catch( Throwable e ){
                 System.exit(-1);
