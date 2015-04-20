@@ -2,18 +2,18 @@
 
 gemfile
 
-properties 'jruby.main' => 'de.saumya.mojo.mains.ExtractingMain'
+properties( 'jruby.main' => 'de.saumya.mojo.mains.ExtractingMain',
+            'gem.home' => '${basedir}/../rubygems',
+            'gem.path' => '${gem.home}',
+            # default versions
+            'bundler.version' => '1.9.2',
+            'jruby.plugins.version' => '1.0.9' )
 
-properties( 'tesla.dump.pom' => 'pom.xml',
-            'tesla.dump.readOnly' => true,
-            'jruby.plugins.version' => '1.0.8',
-            'jruby.version' => '1.7.19' )
+gem 'bundler', '${bundler.version}'
 
-gem 'bundler', '1.7.12'
+pom 'org.jruby:jruby', '1.7.12'
 
-pom 'org.jruby:jruby', '${jruby.version}'
-
-jar 'de.saumya.mojo:jruby-mains', '@project.version@'
+jar 'de.saumya.mojo:jruby-mains', '${artifact.version}'
 
 build do
   directory 'pkg'
@@ -22,7 +22,7 @@ end
 
 files = [ 'config.ru', '*file', '*file.lock', '.jbundler/classpath.rb',
           'lib/**', 'app/**', 'config/**', 'vendor/**', 'spec/**' ]
-jruby_plugin!( :gem, :includeRubygemsInResources => true ) do
+jruby_plugin!( :gem, :includeRubygemsInResources => true, 'jrubyVersion' => '1.7.19' ) do
   execute_goals( 'generate-resources', 'process-resources', :includeBinStubs => true, :includeRubyResources => files )
 end
 
@@ -68,9 +68,12 @@ phase :'integration-test' do
     
     execute_goal( :exec, :id => 'rake -T',
                   :arguments => [ '-jar', 'runnable.jar', '-S', 'rake', '-T' ] )
-    
-    execute_goal( :exec, :id => 'rspec',
+
+    execute_goal( :exec, :id => 'rake spec',
                   :arguments => [ '-jar', 'runnable.jar', '-S', 'rake', 'spec' ] )
+
+    execute_goal( :exec, :id => 'rspec',
+                  :arguments => [ '-jar', 'runnable.jar', '-S', 'rspec' ] )
     
   end
 end

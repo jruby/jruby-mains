@@ -2,7 +2,7 @@
 
 gemfile
 
-properties( 'jruby.main' => 'de.saumya.mojo.mains.JarMain', 
+properties( 'jruby.main' => 'de.saumya.mojo.mains.ExtractingMain',
             'gem.home' => '${basedir}/../rubygems',
             'gem.path' => '${gem.home}',
             # default versions
@@ -62,7 +62,6 @@ phase :'integration-test' do
           :executable => 'java',
           :workingDirectory => '${project.build.directory}',
           :environmentVariables => {
-            'PATH' => 'path',
             'HOME' => 'blabla',
             'GEM_PATH' => '${basedir}',
             'GEM_HOME' => '${basedir}'
@@ -70,7 +69,10 @@ phase :'integration-test' do
     
     execute_goal( :exec, :id => 'rake -T',
                   :arguments => [ '-jar', 'runnable.jar', '-S', 'rake', '-T' ] )
-    
+
+    execute_goal( :exec, :id => 'rake spec',
+                  :arguments => [ '-jar', 'runnable.jar', '-S', 'rake', 'spec' ] )
+
     execute_goal( :exec, :id => 'rspec',
                   :arguments => [ '-jar', 'runnable.jar', '-S', 'rspec' ] )
     

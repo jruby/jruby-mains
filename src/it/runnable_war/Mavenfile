@@ -4,19 +4,19 @@ gemfile
 
 packaging 'war'
 
-properties 'jruby.main' => 'de.saumya.mojo.mains.WarMain'
-
-properties( 'tesla.dump.pom' => 'pom.xml',
-            'tesla.dump.readOnly' => true,
-            'jruby.plugins.version' => '1.0.8',
+properties( 'jruby.main' => 'de.saumya.mojo.mains.WarMain',
+            'gem.home' => '${basedir}/../rubygems',
+            'gem.path' => '${gem.home}',
+            # default versions
             'jruby.version' => '1.7.19',
-            'maven.war.webxml' => 'config/web.xml' )
+            'bundler.version' => '1.9.2',
+            'jruby.plugins.version' => '1.0.9' )
 
-gem 'bundler', '1.7.12'
+gem 'bundler', '${bundler.version}'
 
 pom 'org.jruby:jruby', '${jruby.version}'
 
-jar 'de.saumya.mojo:jruby-mains', '@project.version@'
+jar 'de.saumya.mojo:jruby-mains', '${artifact.version}'
 
 build do
   directory 'pkg'
@@ -59,7 +59,7 @@ resource do
   includes ['bin/*']
 end
 
-plugin :war, '2.2', :archive => { :manifest => { :mainClass => '${jruby.main}' } }
+plugin :war, '2.2', :archive => { :manifest => { :mainClass => '${jruby.main}' } }, :webXml => 'config/web.xml'
 
 # test bits
 
@@ -82,4 +82,4 @@ phase :'integration-test' do
     
   end
 end
- 
+

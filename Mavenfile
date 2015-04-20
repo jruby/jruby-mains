@@ -25,11 +25,11 @@ scope :provided do
   jar 'org.eclipse.jetty:jetty-webapp:${jetty.version}'
 end
 
-properties 'jetty.version' => '8.1.14.v20131031', 'project.build.sourceEncoding' => 'utf-8'
+properties( 'jetty.version' => '8.1.14.v20131031',
+            'project.build.sourceEncoding' => 'utf-8',
+            'polyglot.dump.pom' => 'pom.xml' )
 
 plugin :compiler, '2.3.2', :target => '1.7', :source => '1.7'
-
-properties 'tesla.dump.pom' => 'pom.xml', 'tesla.dump.readonly' => true
 
 distribution_management do
   snapshot_repository :id => 'sonatype-nexus-snapshots', :url =>  'https://oss.sonatype.org/content/repositories/snapshots'
@@ -61,5 +61,11 @@ plugin :invoker, '1.8' do
                  :id => 'integration-test',
                  :goals => [:verify],
                  :streamLogs => true,
-                 :cloneProjectsTo => '${project.build.directory}' )
+                 :cloneProjectsTo => '${project.build.directory}',
+                 :properties => { 'artifact.version' => '${project.version}',
+                   'jruby.version' => '${jruby.version}',
+                   'jruby.plugins.version' => '${jruby.plugins.version}',
+                   'bundler.version' => '1.9.2',
+                   # dump pom for the time being - for travis
+                   'polyglot.dump.pom' => 'pom.xml'} )
 end

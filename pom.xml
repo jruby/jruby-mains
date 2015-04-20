@@ -36,8 +36,7 @@
   </distributionManagement>
   <properties>
     <jetty.version>8.1.14.v20131031</jetty.version>
-    <tesla.dump.readonly>true</tesla.dump.readonly>
-    <tesla.dump.pom>pom.xml</tesla.dump.pom>
+    <polyglot.dump.pom>pom.xml</polyglot.dump.pom>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
@@ -99,6 +98,13 @@
               </goals>
               <streamLogs>true</streamLogs>
               <cloneProjectsTo>${project.build.directory}</cloneProjectsTo>
+              <properties>
+                <artifact.version>${project.version}</artifact.version>
+                <jruby.version>${jruby.version}</jruby.version>
+                <jruby.plugins.version>${jruby.plugins.version}</jruby.plugins.version>
+                <bundler.version>1.9.2</bundler.version>
+                <polyglot.dump.pom>pom.xml</polyglot.dump.pom>
+              </properties>
             </configuration>
           </execution>
         </executions>
