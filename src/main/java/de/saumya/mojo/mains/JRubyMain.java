@@ -77,6 +77,8 @@ public class JRubyMain extends Main {
         env.put("JARS_HOME", currentDirectory);
         // we assume the embedded gems are placed at the root of the "archive"
         env.put("GEM_PATH", currentDirectory);
+        // make sure we do not inherit it from outside
+        env.put("GEM_HOME", jrubyHome + "/lib/ruby/gems/shared);
 
         if (bundleDisableSharedGems != null) {
             // for spawning jruby we need bundler to tell to
