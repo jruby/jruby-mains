@@ -73,12 +73,12 @@ public class JRubyMain extends Main {
         config.setCurrentDirectory(currentDirectory);
         config.setJRubyHome(jrubyHome);
         Map<String, String> env = new HashMap<String, String>(System.getenv());
-        // we assume the embedded jars are placed at the root of the "archive"
-        env.put("JARS_HOME", currentDirectory);
+        // we assume the embedded jars are placed in jars directory
+        env.put("JARS_HOME", currentDirectory + "/jars");
         // we assume the embedded gems are placed at the root of the "archive"
         env.put("GEM_PATH", currentDirectory);
         // make sure we do not inherit it from outside
-        env.put("GEM_HOME", jrubyHome + "/lib/ruby/gems/shared);
+        env.put("GEM_HOME", jrubyHome + "/lib/ruby/gems/shared");
 
         if (bundleDisableSharedGems != null) {
             // for spawning jruby we need bundler to tell to
