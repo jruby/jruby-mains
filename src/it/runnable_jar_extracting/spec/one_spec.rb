@@ -10,7 +10,7 @@ describe "setup" do
   end
 
   it 'lives in the right home' do
-    Jars.home.should == Dir.pwd
+    Jars.home.should == File.join(Dir.pwd, 'jars')
     JRuby.runtime.jruby_home.should == File.join(Dir.pwd, 'META-INF/jruby.home')
   end
 

@@ -10,7 +10,7 @@ describe "setup" do
   end
 
   it 'lives in the right home' do
-    Jars.home.should == 'uri:classloader://'
+    Jars.home.should == 'uri:classloader://jars'
     Dir.pwd.should == 'uri:classloader://'
   end
 

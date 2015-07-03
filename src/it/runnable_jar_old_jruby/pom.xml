@@ -97,7 +97,7 @@
                   <type>jar</type>
                   <version>1.49</version>
                   <classifier />
-                  <outputDirectory>${project.build.outputDirectory}/org/bouncycastle/bcpkix-jdk15on/1.49</outputDirectory>
+                  <outputDirectory>${project.build.outputDirectory}/jars/org/bouncycastle/bcpkix-jdk15on/1.49</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.slf4j</groupId>
@@ -105,7 +105,7 @@
                   <type>jar</type>
                   <version>1.6.4</version>
                   <classifier />
-                  <outputDirectory>${project.build.outputDirectory}/org/slf4j/slf4j-simple/1.6.4</outputDirectory>
+                  <outputDirectory>${project.build.outputDirectory}/jars/org/slf4j/slf4j-simple/1.6.4</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.bouncycastle</groupId>
@@ -113,7 +113,7 @@
                   <type>jar</type>
                   <version>1.49</version>
                   <classifier />
-                  <outputDirectory>${project.build.outputDirectory}/org/bouncycastle/bcprov-jdk15on/1.49</outputDirectory>
+                  <outputDirectory>${project.build.outputDirectory}/jars/org/bouncycastle/bcprov-jdk15on/1.49</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.slf4j</groupId>
@@ -121,7 +121,7 @@
                   <type>jar</type>
                   <version>1.6.4</version>
                   <classifier />
-                  <outputDirectory>${project.build.outputDirectory}/org/slf4j/slf4j-api/1.6.4</outputDirectory>
+                  <outputDirectory>${project.build.outputDirectory}/jars/org/slf4j/slf4j-api/1.6.4</outputDirectory>
                 </artifactItem>
               </artifactItems>
             </configuration>

@@ -70,15 +70,16 @@ public class JRubyMain extends Main {
         super(config);
         // TODO have property to disable hard exit - see warbler
         config.setHardExit(true);
-        config.setCurrentDirectory(currentDirectory);
+        config.setCurrentDirectory(currentDirectory + "/");
         config.setJRubyHome(jrubyHome);
         Map<String, String> env = new HashMap<String, String>(System.getenv());
         // we assume the embedded jars are placed in jars directory
         env.put("JARS_HOME", currentDirectory + "/jars");
         // we assume the embedded gems are placed at the root of the "archive"
-        env.put("GEM_PATH", currentDirectory);
+        env.put("GEM_PATH", currentDirectory + "/");
         // make sure we do not inherit it from outside
-        env.put("GEM_HOME", jrubyHome + "/lib/ruby/gems/shared");
+        // NOTE: setting it to GEM_PATH will break the extractingMain cases 
+        env.put("GEM_HOME", currentDirectory + "/META-INF/jruby.home/lib/ruby/gems/shared");
 
         if (bundleDisableSharedGems != null) {
             // for spawning jruby we need bundler to tell to

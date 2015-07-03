@@ -33,7 +33,7 @@ if File.file?('Jarfile.lock')
       data = l.sub(/-\ /, '').strip.split(':')
       if data.size > 3
         data = Hash[ [:groupId, :artifactId, :type, :version, :classifier].zip( data ) ]
-        data[ :outputDirectory ] = File.join( '${project.build.outputDirectory}',
+        data[ :outputDirectory ] = File.join( '${project.build.outputDirectory}/jars',
                                               data[:groupId].gsub(/[.]/, '/'),
                                               data[:artifactId],
                                               data[:version] )
