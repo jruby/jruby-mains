@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+
+DO NOT MODIFIY - GENERATED CODE
+
+
+-->
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
@@ -8,19 +15,19 @@
   <packaging>war</packaging>
   <name>runnable_war</name>
   <properties>
-    <tesla.dump.readOnly>true</tesla.dump.readOnly>
     <jruby.version>1.7.19</jruby.version>
-    <maven.war.webxml>config/web.xml</maven.war.webxml>
+    <bundler.version>1.9.2</bundler.version>
     <jruby.main>de.saumya.mojo.mains.WarMain</jruby.main>
-    <jruby.plugins.version>1.0.8</jruby.plugins.version>
-    <tesla.dump.pom>pom.xml</tesla.dump.pom>
+    <gem.path>${gem.home}</gem.path>
+    <gem.home>${basedir}/../rubygems</gem.home>
+    <jruby.plugins.version>1.0.9</jruby.plugins.version>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
     <dependency>
       <groupId>rubygems</groupId>
       <artifactId>bundler</artifactId>
-      <version>1.7.12</version>
+      <version>${bundler.version}</version>
       <type>gem</type>
     </dependency>
     <dependency>
@@ -32,7 +39,7 @@
     <dependency>
       <groupId>de.saumya.mojo</groupId>
       <artifactId>jruby-mains</artifactId>
-      <version>@project.version@</version>
+      <version>${artifact.version}</version>
     </dependency>
   </dependencies>
   <repositories>
@@ -160,6 +167,7 @@
               <mainClass>${jruby.main}</mainClass>
             </manifest>
           </archive>
+          <webXml>config/web.xml</webXml>
         </configuration>
       </plugin>
       <plugin>

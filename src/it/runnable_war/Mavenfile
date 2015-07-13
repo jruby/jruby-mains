@@ -47,7 +47,7 @@ plugin :dependency, '2.5.1' do
                 :artifactItems => items )
   execute_goal( 'unpack-dependencies',
                 :phase => 'prepare-package',
-                :id => 'pack jruby',
+                :id => 'unpack jruby-mains',
                 :includeGroupIds => 'de.saumya.mojo',
                 :excludes => '*, about_files/*, META-INF/maven/**',
                 :outputDirectory => '${project.build.directory}/${project.build.finalName}' )           
