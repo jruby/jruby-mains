@@ -72,6 +72,8 @@ public class JRubyMain extends Main {
         config.setHardExit(true);
         config.setCurrentDirectory(currentDirectory + "/");
         config.setJRubyHome(jrubyHome);
+        // for jruby 1.7.x add the current directory explicitly to LOAD_PATH
+        config.setLoadPaths(Arrays.asList(currentDirectory + "/"));
         Map<String, String> env = new HashMap<String, String>(System.getenv());
         // we assume the embedded jars are placed in jars directory
         env.put("JARS_HOME", currentDirectory + "/jars");
