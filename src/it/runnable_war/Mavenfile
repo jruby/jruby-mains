@@ -35,7 +35,7 @@ plugin :dependency, '2.5.1' do
     data = l.sub(/-\ /, '').strip.split(':')
     if data.size > 3
       data = Hash[ [:groupId, :artifactId, :type, :version, :classifier].zip( data ) ]
-      data[ :outputDirectory ] = File.join( '${project.build.outputDirectory}',
+      data[ :outputDirectory ] = File.join( '${project.build.outputDirectory}/jars',
                                             data[:groupId].gsub(/[.]/, '/'),
                                             data[:artifactId],
                                             data[:version] )
@@ -49,13 +49,13 @@ plugin :dependency, '2.5.1' do
                 :phase => 'prepare-package',
                 :id => 'pack jruby',
                 :includeGroupIds => 'de.saumya.mojo',
-                :excludes => '*, about_files/*, META-INF/*',
+                :excludes => '*, about_files/*, META-INF/maven/**',
                 :outputDirectory => '${project.build.directory}/${project.build.finalName}' )           
 end
 
 resource do
-  targetPath '${project.build.directory}/${project.build.finalName}/META-INF/jruby.home'
-  directory '${project.build.directory}/rubygems'
+  targetPath '${project.build.directory}/${project.build.finalName}'
+  directory '${gem.home}'
   includes ['bin/*']
 end
 

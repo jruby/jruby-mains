@@ -1,0 +1,12 @@
+#-*- mode: ruby -*-
+
+require "bundler/setup"
+p $LOAD_PATH
+
+require 'jbundler'
+
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:spec)
+
+task :default => :spec

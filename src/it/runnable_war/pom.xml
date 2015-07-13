@@ -44,8 +44,8 @@
   <build>
     <resources>
       <resource>
-        <targetPath>${project.build.directory}/${project.build.finalName}/META-INF/jruby.home</targetPath>
-        <directory>${project.build.directory}/rubygems</directory>
+        <targetPath>${project.build.directory}/${project.build.finalName}</targetPath>
+        <directory>${gem.home}</directory>
         <includes>
           <include>bin/*</include>
         </includes>
@@ -108,7 +108,7 @@
                   <type>jar</type>
                   <version>1.49</version>
                   <classifier />
-                  <outputDirectory>${project.build.outputDirectory}/org/bouncycastle/bcpkix-jdk15on/1.49</outputDirectory>
+                  <outputDirectory>${project.build.outputDirectory}/jars/org/bouncycastle/bcpkix-jdk15on/1.49</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.slf4j</groupId>
@@ -116,7 +116,7 @@
                   <type>jar</type>
                   <version>1.6.4</version>
                   <classifier />
-                  <outputDirectory>${project.build.outputDirectory}/org/slf4j/slf4j-simple/1.6.4</outputDirectory>
+                  <outputDirectory>${project.build.outputDirectory}/jars/org/slf4j/slf4j-simple/1.6.4</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.bouncycastle</groupId>
@@ -124,7 +124,7 @@
                   <type>jar</type>
                   <version>1.49</version>
                   <classifier />
-                  <outputDirectory>${project.build.outputDirectory}/org/bouncycastle/bcprov-jdk15on/1.49</outputDirectory>
+                  <outputDirectory>${project.build.outputDirectory}/jars/org/bouncycastle/bcprov-jdk15on/1.49</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.slf4j</groupId>
@@ -132,20 +132,20 @@
                   <type>jar</type>
                   <version>1.6.4</version>
                   <classifier />
-                  <outputDirectory>${project.build.outputDirectory}/org/slf4j/slf4j-api/1.6.4</outputDirectory>
+                  <outputDirectory>${project.build.outputDirectory}/jars/org/slf4j/slf4j-api/1.6.4</outputDirectory>
                 </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
           <execution>
-            <id>pack jruby</id>
+            <id>unpack jruby-mains</id>
             <phase>prepare-package</phase>
             <goals>
               <goal>unpack-dependencies</goal>
             </goals>
             <configuration>
               <includeGroupIds>de.saumya.mojo</includeGroupIds>
-              <excludes>*, about_files/*, META-INF/*</excludes>
+              <excludes>*, about_files/*, META-INF/maven/**</excludes>
               <outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
             </configuration>
           </execution>
