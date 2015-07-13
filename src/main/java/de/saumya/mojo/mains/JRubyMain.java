@@ -79,7 +79,7 @@ public class JRubyMain extends Main {
         env.put("GEM_PATH", currentDirectory + "/");
         // make sure we do not inherit it from outside
         // NOTE: setting it to GEM_PATH will break the extractingMain cases 
-        env.put("GEM_HOME", currentDirectory + "/META-INF/jruby.home/lib/ruby/gems/shared");
+        env.put("GEM_HOME", jrubyHome + "/lib/ruby/gems/shared");
 
         if (bundleDisableSharedGems != null) {
             // for spawning jruby we need bundler to tell to
@@ -99,7 +99,7 @@ public class JRubyMain extends Main {
         List<String> newArgs = new ArrayList<String>(Arrays.asList(args));
         addRequire(newArgs, "META-INF/init");
         addRequire(newArgs, "WEB-INF/init");
-        addRequire(newArgs, "META-INF/bundler_shared_helpers_patch");
+        addRequire(newArgs, "META-INF/monkey_patches");
         return super.run(newArgs.toArray(new String[newArgs.size()]));
     }
     
