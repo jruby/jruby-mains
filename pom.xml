@@ -42,7 +42,7 @@ DO NOT MODIFIY - GENERATED CODE
     </snapshotRepository>
   </distributionManagement>
   <properties>
-    <jruby.version>1.7.19</jruby.version>
+    <jruby.version>1.7.21</jruby.version>
     <jetty.version>8.1.14.v20131031</jetty.version>
     <polyglot.dump.pom>pom.xml</polyglot.dump.pom>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>

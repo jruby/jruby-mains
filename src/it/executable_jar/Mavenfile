@@ -1,0 +1,51 @@
+#-*- mode: ruby -*-
+
+#repository :id => 'rubygems-releases', :url => 'http://rubygems-proxy.torquebox.org/releases'
+
+#gem 'leafy-logger'
+
+properties( 'jruby.main' => 'de.saumya.mojo.mains.JarMain', 
+            'gem.home' => '${basedir}/../rubygems',
+            'gem.path' => '${gem.home}',
+            # default versions
+            'jruby.version' => '1.7.21',
+           # 'jruby.version' => '9.0.0.0.rc2',
+            'jruby.plugins.version' => '1.0.9' )
+
+jar 'org.jruby:jruby-complete', '${jruby.version}'
+
+jar 'de.saumya.mojo:jruby-mains', '${artifact.version}'
+
+build do
+  directory 'pkg'
+  final_name 'executable'
+  resource :directory => '${basedir}', :includes => ['*.rb']
+end
+
+plugin :shade, '2.2' do
+  execute_goals( 'shade',
+                 :id => 'pack', :phase => :package,
+                 :artifactSet => { :excludes => ['rubygems:*'] },
+                 :transformers => [ { :@implementation => 'org.apache.maven.plugins.shade.resource.ManifestResourceTransformer',
+                                      :mainClass => '${jruby.main}' } ] )
+end
+
+# test bits
+
+phase :'integration-test' do
+  plugin( 'org.codehaus.mojo:exec-maven-plugin:1.2',
+          :executable => 'java',
+          :workingDirectory => '${project.build.directory}',
+          :environmentVariables => {
+            'PATH' => 'path',
+            'HOME' => 'blabla',
+#            'GEM_PATH' => '${basedir}',
+ #           'GEM_HOME' => '${basedir}'
+          } ) do
+    
+    execute_goal( :exec, :id => 'execute the jar',
+                  :arguments => [ '-jar', 'executable.jar' ] )
+    
+  end
+end
+ 

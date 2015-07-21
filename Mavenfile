@@ -25,7 +25,7 @@ scope :provided do
   jar 'org.eclipse.jetty:jetty-webapp:${jetty.version}'
 end
 
-properties( 'jruby.version' => '1.7.19',
+properties( 'jruby.version' => '1.7.21',
             'jetty.version' => '8.1.14.v20131031',
             'project.build.sourceEncoding' => 'utf-8',
             'polyglot.dump.pom' => 'pom.xml' )
