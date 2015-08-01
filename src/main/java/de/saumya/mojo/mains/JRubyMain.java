@@ -61,11 +61,11 @@ public class JRubyMain extends Main {
             System.exit(1);
         }
     }
-    
+
     JRubyMain(String bundleDisableSharedGems, String currentDirectory, String jrubyHome) {
         this(bundleDisableSharedGems, currentDirectory, jrubyHome, new RubyInstanceConfig());
     }
-    
+
     JRubyMain(String bundleDisableSharedGems, String currentDirectory, String jrubyHome, RubyInstanceConfig config) {
         super(config);
         // TODO have property to disable hard exit - see warbler
@@ -80,7 +80,7 @@ public class JRubyMain extends Main {
         // we assume the embedded gems are placed at the root of the "archive"
         env.put("GEM_PATH", currentDirectory + "/");
         // make sure we do not inherit it from outside
-        // NOTE: setting it to GEM_PATH will break the extractingMain cases 
+        // NOTE: setting it to GEM_PATH will break the extractingMain cases
         env.put("GEM_HOME", jrubyHome + "/lib/ruby/gems/shared");
 
         if (bundleDisableSharedGems != null) {
@@ -93,7 +93,7 @@ public class JRubyMain extends Main {
         // older jruby-1.7.x does need this
         config.setLoader(JRubyMain.class.getClassLoader());
     }
-    
+
     public Status run(String[] args) {
         // require META-INF/init.rb and WEB-INF/init.rb to load any additional
         // config
@@ -102,9 +102,10 @@ public class JRubyMain extends Main {
         addRequire(newArgs, "META-INF/init");
         addRequire(newArgs, "WEB-INF/init");
         addRequire(newArgs, "META-INF/monkey_patches");
+        newArgs.add(0, "-rjars/setup");
         return super.run(newArgs.toArray(new String[newArgs.size()]));
     }
-    
+
     private void addRequire(List<String> newArgs, String name) {
         if (getClass().getClassLoader().getResource(name + ".rb") != null) {
             newArgs.add(0, "-r" + name);
