@@ -1,6 +1,6 @@
 #-*- mode: ruby -*-
 
-id 'de.saumya.mojo:jruby-mains:0.3.1'
+id 'de.saumya.mojo:jruby-mains:0.4.0'
 
 repository( :id => 'rso-public-grid',
             :url => 'https://repository.sonatype.org/content/groups/sonatype-public-grid',
