@@ -1,6 +1,6 @@
 #-*- mode: ruby -*-
 
-id 'de.saumya.mojo:jruby-mains:0.4.0'
+id 'org.jruby.mains:jruby-mains:0.4.0'
 
 repository( :id => 'rso-public-grid',
             :url => 'https://repository.sonatype.org/content/groups/sonatype-public-grid',
@@ -8,10 +8,9 @@ repository( :id => 'rso-public-grid',
 
 license :name => 'MIT'
 
-developer( :name => 'Christian Meier',
-           :email => 'm.kristian@web.de' )
+developer( :name => 'Christian Meier', :email => 'm.kristian@web.de' )
 
-github = 'mkristian/jruby-mains'
+github = 'jruby/jruby-mains'
 scm( :developerConnection => "scm:git:ssh://git@github.com:#{github}.git",
      :connection => "scm:git:https://github.com/#{github}.git",
      :url => "https://github.com/#{github}" )

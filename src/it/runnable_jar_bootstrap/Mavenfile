@@ -1,16 +1,12 @@
 #-*- mode: ruby -*-
 
-properties( 'jruby.main' => 'de.saumya.mojo.mains.JarMain', 
+properties( 'jruby.main' => 'org.jruby.mains.JarMain', 
             'gem.home' => '${basedir}/../rubygems',
             'gem.path' => '${gem.home}',
             # default versions
-            'jruby.version' => '1.7.19',
+            'jruby.version' => '1.7.21',
             'bundler.version' => '1.9.2',
-            'jruby.plugins.version' => '1.0.9' )
-
-pom 'org.jruby:jruby', '${jruby.version}'
-
-jar 'de.saumya.mojo:jruby-mains', '${artifact.version}'
+            'jruby.plugins.version' => '1.0.10' )
 
 build do
   directory 'pkg'
@@ -18,12 +14,23 @@ build do
   resource :directory => 'lib'
 end
 
-plugin :shade, '2.2' do
-  execute_goals( 'shade',
-                 :id => 'pack', :phase => :package,
-                 :artifactSet => { :excludes => ['rubygems:*'] },
-                 :transformers => [ { :@implementation => 'org.apache.maven.plugins.shade.resource.ManifestResourceTransformer',
-                                      :mainClass => '${jruby.main}' } ] )
+jar 'org.slf4j:slf4j-simple:1.7.12'
+
+jar 'org.jruby:jruby-complete', '${jruby.version}'
+jar 'org.jruby.mains:jruby-mains', '${artifact.version}'
+
+phase :package do
+  plugin :dependency, :excludeGroupIds => 'org.jruby' do
+    execute_goal 'copy-dependencies', :id => 'copy jars', :outputDirectory => '${project.build.outputDirectory}/jars', :useRepositoryLayout => true
+    execute_goal 'list', :id => 'create Jars.lock', :outputFile => '${project.build.outputDirectory}/Jars.lock', :outputAbsoluteArtifactFilename => true
+  end
+  plugin :shade, '2.2' do
+    execute_goals( 'shade',
+                   :id => 'pack',
+                   :artifactSet => { :includes => ['org.jruby:*', 'org.jruby.mains:*'] },
+                   :transformers => [ { :@implementation => 'org.apache.maven.plugins.shade.resource.ManifestResourceTransformer',
+                                        :mainClass => '${jruby.main}' } ] )
+  end
 end
 
 # test bits
@@ -43,7 +50,7 @@ phase :'integration-test' do
                   :arguments => [ '-jar', 'runnable.jar' ] )
 
     execute_goal( :exec, :id => 'extracting jar',
-                  :arguments => [ '-cp', 'runnable.jar', 'de.saumya.mojo.mains.ExtractingMain' ] )
+                  :arguments => [ '-cp', 'runnable.jar', 'org.jruby.mains.ExtractingMain' ] )
 
   end
 end

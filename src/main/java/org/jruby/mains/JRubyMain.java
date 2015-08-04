@@ -1,4 +1,4 @@
-package de.saumya.mojo.mains;
+package org.jruby.mains;
 
 import java.util.ArrayList;
 import java.util.Arrays;

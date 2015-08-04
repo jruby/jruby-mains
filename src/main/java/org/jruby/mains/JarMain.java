@@ -1,4 +1,4 @@
-package de.saumya.mojo.mains;
+package org.jruby.mains;
 
 public class JarMain {
     

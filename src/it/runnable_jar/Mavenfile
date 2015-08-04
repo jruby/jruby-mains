@@ -2,7 +2,7 @@
 
 gemfile
 
-properties( 'jruby.main' => 'de.saumya.mojo.mains.JarMain', 
+properties( 'jruby.main' => 'org.jruby.mains.JarMain', 
             'gem.home' => '${basedir}/../rubygems',
             'gem.path' => '${gem.home}',
             # default versions
@@ -14,7 +14,7 @@ gem 'bundler', '${bundler.version}'
 
 pom 'org.jruby:jruby', '${jruby.version}'
 
-jar 'de.saumya.mojo:jruby-mains', '${artifact.version}'
+jar 'org.jruby.mains:jruby-mains', '${artifact.version}'
 
 build do
   directory 'pkg'

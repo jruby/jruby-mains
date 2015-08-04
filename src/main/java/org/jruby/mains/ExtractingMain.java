@@ -1,4 +1,4 @@
-package de.saumya.mojo.mains;
+package org.jruby.mains;
 
 import java.io.File;
 import java.io.IOException;

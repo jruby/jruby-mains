@@ -81,22 +81,22 @@ of course you can just unpack the gems.jar and application.jar into **WEB-INF/cl
 
 this jruby-mains artifact expect the gems and jar dependencies be vendored at the root of the application.jar
 
-	JARS_HOME=. GEMS_HOME=. GEMS_PATH=. bundle install
+	JARS_HOME=./jars GEMS_HOME=. GEMS_PATH=. bundle install
 	jar -cvf application.jar .
 
 and run it with
 
     java -cp application.jar:jruby-complete.jar:jruby-mains.jar org.jruby.Main bin/rackup
 
-packing the bin/* files into ```META-INF/jruby.home/bin``` will allow to execute them via the **-S**
+or via the **-S** switch
 
-	java -cp application.jar:jruby-complete.jar:jruby-mains.jar de.saumya.mojo.mains.JarMain -S rackup
+	java -cp application.jar:jruby-complete.jar:jruby-mains.jar org.jruby.mains.JarMain -S rackup
 
-finally you can merge those three jar files into one and set the entry-point to **de.saumya.mojo.mains.JarMain**. this reduces the execution to
+finally you can merge those three jar files into one and set the entry-point to **org.jruby.mains.JarMain**. this reduces the execution to
 
 	java -jar application-uber.jar -S rackup
 
-some executables spawn a new ruby process which is not working from a jruby-complete exectution. but in such cases you can use the entry-point **de.saumya.mojo.mains.ExtractingMain** which unpacks the jar into a temporary directory and then executes the application.
+some executables spawn a new ruby process which is not working from a jruby-complete exectution. but in such cases you can use the entry-point **org.jruby.mains.ExtractingMain** which unpacks the jar into a temporary directory and then executes the application.
 
 # to be continued
 

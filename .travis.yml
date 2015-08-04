@@ -1,3 +1,6 @@
 language: java
+sudo: false
+before_script:
+  - export MAVEN_SKIP_RC=true
 install: ./mvnw initialize
 script: ./mvnw verify

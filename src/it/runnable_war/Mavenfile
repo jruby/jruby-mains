@@ -4,7 +4,7 @@ gemfile
 
 packaging 'war'
 
-properties( 'jruby.main' => 'de.saumya.mojo.mains.WarMain',
+properties( 'jruby.main' => 'org.jruby.mains.WarMain',
             'gem.home' => '${basedir}/../rubygems',
             'gem.path' => '${gem.home}',
             # default versions
@@ -16,7 +16,7 @@ gem 'bundler', '${bundler.version}'
 
 pom 'org.jruby:jruby', '${jruby.version}'
 
-jar 'de.saumya.mojo:jruby-mains', '${artifact.version}'
+jar 'org.jruby.mains:jruby-mains', '${artifact.version}'
 
 build do
   directory 'pkg'
@@ -48,7 +48,7 @@ plugin :dependency, '2.5.1' do
   execute_goal( 'unpack-dependencies',
                 :phase => 'prepare-package',
                 :id => 'unpack jruby-mains',
-                :includeGroupIds => 'de.saumya.mojo',
+                :includeGroupIds => 'org.jruby.mains',
                 :excludes => '*, about_files/*, META-INF/maven/**',
                 :outputDirectory => '${project.build.directory}/${project.build.finalName}' )           
 end

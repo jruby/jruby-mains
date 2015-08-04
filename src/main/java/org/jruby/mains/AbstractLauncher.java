@@ -1,4 +1,4 @@
-package de.saumya.mojo.mains;
+package org.jruby.mains;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -36,7 +36,7 @@ public abstract class AbstractLauncher {
         try (URLClassLoader loader = new URLClassLoader(
                 classloaderUrls.toArray(new URL[classloaderUrls.size()]),
                 ClassLoader.getSystemClassLoader().getParent())) {
-            Class<?> main = loader.loadClass("de.saumya.mojo.mains.JRubyMain");
+            Class<?> main = loader.loadClass("org.jruby.mains.JRubyMain");
             Method m = main.getMethod("main", String.class, String.class, String.class, args.getClass());
             m.invoke(main, config.bundleDisableSharedGems, config.workingDirectory, config.jrubyHome, (Object[]) args);
         }

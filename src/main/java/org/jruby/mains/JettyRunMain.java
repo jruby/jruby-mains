@@ -1,4 +1,4 @@
-package de.saumya.mojo.mains;
+package org.jruby.mains;
 
 import java.net.URL;
 import java.security.ProtectionDomain;

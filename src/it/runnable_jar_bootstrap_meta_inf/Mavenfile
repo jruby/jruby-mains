@@ -1,6 +1,6 @@
 #-*- mode: ruby -*-
 
-properties( 'jruby.main' => 'de.saumya.mojo.mains.JarMain', 
+properties( 'jruby.main' => 'org.jruby.mains.JarMain', 
             'gem.home' => '${basedir}/../rubygems',
             'gem.path' => '${gem.home}',
             # default versions
@@ -10,7 +10,7 @@ properties( 'jruby.main' => 'de.saumya.mojo.mains.JarMain',
 
 pom 'org.jruby:jruby', '${jruby.version}'
 
-jar 'de.saumya.mojo:jruby-mains', '${artifact.version}'
+jar 'org.jruby.mains:jruby-mains', '${artifact.version}'
 
 build do
   directory 'pkg'
@@ -43,7 +43,7 @@ phase :'integration-test' do
                   :arguments => [ '-jar', 'runnable.jar' ] )
 
     execute_goal( :exec, :id => 'extracting jar',
-                  :arguments => [ '-cp', 'runnable.jar', 'de.saumya.mojo.mains.ExtractingMain' ] )
+                  :arguments => [ '-cp', 'runnable.jar', 'org.jruby.mains.ExtractingMain' ] )
 
   end
 end
