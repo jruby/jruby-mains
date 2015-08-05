@@ -3,4 +3,4 @@ sudo: false
 before_script:
   - export MAVEN_SKIP_RC=true
 install: ./mvnw initialize
-script: ./mvnw verify
+script: ./mvnw verify -Dinvoker.test=runnable_jar_bootstrap -Dinvoker.debug=true

@@ -19,11 +19,14 @@ jar 'org.slf4j:slf4j-simple:1.7.12'
 jar 'org.jruby:jruby-complete', '${jruby.version}'
 jar 'org.jruby.mains:jruby-mains', '${artifact.version}'
 
-phase :package do
-  plugin :dependency, :excludeGroupIds => 'org.jruby' do
+phase 'prepare-package' do
+  plugin :dependency, '2.8', :excludeGroupIds => 'org.jruby' do
     execute_goal 'copy-dependencies', :id => 'copy jars', :outputDirectory => '${project.build.outputDirectory}/jars', :useRepositoryLayout => true
     execute_goal 'list', :id => 'create Jars.lock', :outputFile => '${project.build.outputDirectory}/Jars.lock', :outputAbsoluteArtifactFilename => true
   end
+end
+
+phase :package do
   plugin :shade, '2.2' do
     execute_goals( 'shade',
                    :id => 'pack',
