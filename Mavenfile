@@ -1,12 +1,10 @@
 #-*- mode: ruby -*-
 
-id 'org.jruby.mains:jruby-mains:0.4.0'
+id 'org.jruby.mains:jruby-mains'
 
-repository( :id => 'rso-public-grid',
-            :url => 'https://repository.sonatype.org/content/groups/sonatype-public-grid',
-            :releases => true, :snapshots => true )
+version '0.4.0'
 
-license :name => 'MIT'
+license :name => 'LGPL3'
 
 developer( :name => 'Christian Meier', :email => 'm.kristian@web.de' )
 
@@ -36,10 +34,15 @@ distribution_management do
   repository :id => 'sonatype-nexus-staging', :url =>  'https://oss.sonatype.org/service/local/staging/deploy/maven2'
 end
 
+plugin :deploy, '2.8.2', :skip => '${deploy.skip}'
+properties 'deploy.skip' => true
+
 profile :id => 'release' do
   activation do
     property :name => 'performRelease', :value => 'true'
   end
+
+  properties 'deploy.skip' => false
 
   build do
     default_goal :deploy

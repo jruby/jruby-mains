@@ -98,6 +98,24 @@ finally you can merge those three jar files into one and set the entry-point to 
 
 some executables spawn a new ruby process which is not working from a jruby-complete exectution. but in such cases you can use the entry-point **org.jruby.mains.ExtractingMain** which unpacks the jar into a temporary directory and then executes the application.
 
-# to be continued
+# development
+
+use maven 3.3.x or the supplied ```mvnw``` wrappers. all integration tests in **src/it** are using the ruby pom DSL the pom.xml is just a dummy for the invoker plugin to find the test.
+
+# license
+
+Almost all code is under the LGPL-3 license.
+
+# contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Added some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
+
+# meta-fu
+
+report issues and enjoy :) 
 
 
