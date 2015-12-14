@@ -18,3 +18,9 @@ module Bundler
     end
   end
 end
+
+begin
+  require 'bundler/shared_helpers'
+rescue LoadError
+  # ignore and assume we do not use bundler
+end
