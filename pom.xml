@@ -11,7 +11,7 @@ DO NOT MODIFIY - GENERATED CODE
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jruby.mains</groupId>
   <artifactId>jruby-mains</artifactId>
-  <version>0.4.0</version>
+  <version>0.5.0</version>
   <name>jruby-mains</name>
   <description>a set of main method to launch a jruby application from within a jar or war file or start jetty as executable</description>
   <url>http://github.com/#{github}</url>
@@ -42,7 +42,7 @@ DO NOT MODIFIY - GENERATED CODE
     </snapshotRepository>
   </distributionManagement>
   <properties>
-    <jruby.version>1.7.21</jruby.version>
+    <jruby.version>1.7.23</jruby.version>
     <jetty.version>8.1.14.v20131031</jetty.version>
     <deploy.skip>true</deploy.skip>
     <polyglot.dump.pom>pom.xml</polyglot.dump.pom>
@@ -105,7 +105,8 @@ DO NOT MODIFIY - GENERATED CODE
               <properties>
                 <artifact.version>${project.version}</artifact.version>
                 <jruby.version>${jruby.version}</jruby.version>
-                <jruby.plugins.version>1.0.9</jruby.plugins.version>
+                <jetty.version>${jetty.version}</jetty.version>
+                <jruby.plugins.version>1.1.4</jruby.plugins.version>
                 <bundler.version>1.9.2</bundler.version>
                 <polyglot.dump.pom>pom.xml</polyglot.dump.pom>
               </properties>

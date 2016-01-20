@@ -19,10 +19,10 @@ public class JRubyMain extends Main {
     private static String[] addBootstrap(String... args){
         String bootstrap = null;
         if (JRubyMain.class.getClassLoader().getResource(JAR_BOOTSTRAP) != null) {
-            bootstrap = "classpath:" + JAR_BOOTSTRAP;
+            bootstrap = "classpath:/" + JAR_BOOTSTRAP;
         }
         else if (JRubyMain.class.getClassLoader().getResource(META_INF_JAR_BOOTSTRAP) != null) {
-            bootstrap = "classpath:" + META_INF_JAR_BOOTSTRAP;
+            bootstrap = "classpath:/" + META_INF_JAR_BOOTSTRAP;
         }
         if (bootstrap == null) {
             return args;
@@ -43,9 +43,11 @@ public class JRubyMain extends Main {
         }
         catch (RaiseException rj) {
             try {
+		handleRaiseException(rj);
                 System.exit(-1);//handleRaiseException(rj));
             }
             catch( Throwable e ){
+		rj.printStackTrace();
                 System.exit(-1);
             }
         }

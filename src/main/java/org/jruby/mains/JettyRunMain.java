@@ -11,11 +11,16 @@ import org.eclipse.jetty.webapp.WebAppContext;
 
 public class JettyRunMain {
     
-    public static void main(String[] args) {
-        main(System.getProperties(), args);
+    public static void main(String... args) throws Exception {
+	if (args.length == 0) {
+	    main(System.getProperties());
+	}
+	else {
+	    WarMain.main(args);
+	}
     }
     
-    public static void main(Properties props, String[] args) {
+    public static void main(Properties props) {
         Server server = new Server();
         SocketConnector connector = new SocketConnector();
         

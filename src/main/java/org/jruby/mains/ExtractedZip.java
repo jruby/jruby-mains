@@ -55,12 +55,6 @@ public class ExtractedZip {
             
             @Override
             public void run() {
-                try {
-                    Files.walkFileTree(target.toPath(), new DeleteDirectory());
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
             
         });

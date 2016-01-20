@@ -10,13 +10,14 @@ describe "setup" do
   end
 
   it 'lives in the right home' do
-    Jars.home.should == File.join(Dir.pwd, 'jars')
-    JRuby.runtime.jruby_home.should == File.join(Dir.pwd, 'META-INF/jruby.home')
+    java.io.File.new(Jars.home).canonical_path.should == java.io.File.new(Dir.pwd, 'jars').canonical_path
+    java.io.File.new(JRuby.runtime.jruby_home).canonical_path.should == java.io.File.new(Dir.pwd, 'META-INF/jruby.home').canonical_path
   end
 
   it 'has the right load-path' do
+    pwd = java.io.File.new(Dir.pwd).canonical_path
     $LOAD_PATH.each do |lp|
-      lp.should =~ /^#{Dir.pwd}/
+      java.io.File.new(lp).canonical_path.should =~ /^#{pwd}/
     end
   end
 

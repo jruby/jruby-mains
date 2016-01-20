@@ -2,7 +2,7 @@
 
 id 'org.jruby.mains:jruby-mains'
 
-version '0.4.0'
+version '0.5.0'
 
 license :name => 'LGPL3'
 
@@ -22,7 +22,7 @@ scope :provided do
   jar 'org.eclipse.jetty:jetty-webapp:${jetty.version}'
 end
 
-properties( 'jruby.version' => '1.7.21',
+properties( 'jruby.version' => '1.7.23',
             'jetty.version' => '8.1.14.v20131031',
             'project.build.sourceEncoding' => 'utf-8',
             'polyglot.dump.pom' => 'pom.xml' )
@@ -68,7 +68,8 @@ plugin :invoker, '1.8' do
                  :cloneProjectsTo => '${project.build.directory}/it',
                  :properties => { 'artifact.version' => '${project.version}',
                    'jruby.version' => '${jruby.version}',
-                   'jruby.plugins.version' => '1.0.9',
+                   'jetty.version' => '${jetty.version}',
+                   'jruby.plugins.version' => '1.1.4',
                    'bundler.version' => '1.9.2',
                    # dump pom for the time being - for travis
                    'polyglot.dump.pom' => 'pom.xml'} )

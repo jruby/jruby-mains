@@ -3,13 +3,13 @@ import org.codehaus.plexus.util.FileUtils;
 
 
 String log = FileUtils.fileRead( new File( basedir, "build.log" ) );
-String expected = "here I am: uri:classloader://jar-bootstrap.rb";
+String expected = "here I am: uri:classloader:///jar-bootstrap.rb";
 if ( !log.contains( expected ) )
 {
     throw new RuntimeException( "log file does not contain '" + expected + "'" );
 }
 
-expected = "here I am: jruby-mains/jar-bootstrap.rb";
+expected = "here I am: jruby-mains//jar-bootstrap.rb";
 if ( !log.contains( expected ) )
 {
     throw new RuntimeException( "log file does not contain '" + expected + "'" );

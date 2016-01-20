@@ -18,4 +18,10 @@ public class Config {
         this.jrubyHome = jrubyHome;
         this.bundleDisableSharedGems = bundleDisableSharedGems == null ? null : bundleDisableSharedGems.toString();
     }
+
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+	buf.append("working directory: ").append(workingDirectory).append("\njruby home: ").append(jrubyHome).append("\nbundler disable shared gems: ").append(bundleDisableSharedGems);
+	return buf.toString();	    
+    }
 }

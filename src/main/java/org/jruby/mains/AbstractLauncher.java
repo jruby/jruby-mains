@@ -30,7 +30,9 @@ public abstract class AbstractLauncher {
     void launchIt(List<URL> classloaderUrls, Config config, String... args)
             throws ClassNotFoundException, NoSuchMethodException,
             IllegalAccessException, InvocationTargetException, IOException {
-        //TODO debug: System.err.println(classloaderUrls);
+        //TODO debug:
+	//System.err.println(classloaderUrls);
+        //System.err.println(config);
         // we want to have a clean classloader hierarchy without this
         // classloader involved
         try (URLClassLoader loader = new URLClassLoader(

@@ -4,7 +4,7 @@ gemfile
 
 packaging 'war'
 
-properties( 'jruby.main' => 'org.jruby.mains.WarMain',
+properties( 'jruby.main' => 'org.jruby.mains.JettyRunMain',
             'gem.home' => '${basedir}/../rubygems',
             'gem.path' => '${gem.home}',
             # default versions
@@ -16,11 +16,15 @@ gem 'bundler', '${bundler.version}'
 
 pom 'org.jruby:jruby', '${jruby.version}'
 
-jar 'org.jruby.mains:jruby-mains', '${artifact.version}'
+scope :provided do
+  jar 'org.jruby.mains:jruby-mains', '${artifact.version}'
+  jar 'org.eclipse.jetty', 'jetty-server', '${jetty.version}'
+  jar 'org.eclipse.jetty', 'jetty-webapp', '${jetty.version}'
+end
 
 build do
   directory 'pkg'
-  final_name 'runnable'
+  final_name 'executable'
 end
 
 files = [ 'config.ru', '*file', '*file.lock', '.jbundler/classpath.rb',
@@ -46,11 +50,18 @@ plugin :dependency, '2.5.1' do
                 :id => 'copy jar dependencies', :phase => 'prepare-package',
                 :artifactItems => items )
   execute_goal( 'unpack-dependencies',
-                :phase => 'prepare-package',
-                :id => 'unpack jruby-mains',
+                :id => 'jetty-classpath',
+                :phase => 'validate',
+                :includeScope => :provided,
+                :includeGroupIds => 'org.eclipse.jetty,org.eclipse.jetty.orbit',
+                :excludes => ['*', 'about_files/*', 'META-INF/*'].join(','),
+                :outputDirectory => '${project.build.directory}/${project.build.finalName}' )
+  execute_goal( 'unpack-dependencies',
+                :id => 'jruby-mains-classpath',
+                :phase => 'validate',
+                :includeScope => :provided,
                 :includeGroupIds => 'org.jruby.mains',
-                :excludes => '*, about_files/*, META-INF/maven/**',
-                :outputDirectory => '${project.build.directory}/${project.build.finalName}' )           
+                :outputDirectory => '${project.build.directory}/${project.build.finalName}' )
 end
 
 resource do
@@ -75,14 +86,14 @@ phase :'integration-test' do
           } ) do
     
     execute_goal( :exec, :id => 'rake -T',
-                  :arguments => [ '-jar', 'runnable.war', '-S', 'rake', '-T' ] )
+                  :arguments => [ '-jar', 'executable.war', '-S', 'rake', '-T' ] )
     
     # TODO
     #execute_goal( :exec, :id => 'rake spec',
-    #              :arguments => [ '-jar', 'runnable.war', '-S', 'rake', 'spec' ] )
+    #              :arguments => [ '-jar', 'executable.war', '-S', 'rake', 'spec' ] )
     
     execute_goal( :exec, :id => 'rspec',
-                  :arguments => [ '-jar', 'runnable.war', '-S', 'rspec' ] )
+                  :arguments => [ '-jar', 'executable.war', '-S', 'rspec' ] )
     
   end
 end
