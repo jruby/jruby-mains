@@ -6,10 +6,10 @@ describe "something" do
     $CLASSPATH.each do |lp|
       lp.should =~ /^file:/
     end
-    Jars.home.should == 'uri:classloader://WEB-INF/classes/jars'
+    Jars.home.should == 'uri:classloader:/WEB-INF/classes/jars'
     Dir.pwd.should == 'uri:classloader://WEB-INF/classes/'
     $LOAD_PATH.each do |lp|
-      lp.should =~ /^uri:classloader:\/\/WEB-INF\/classes|uri:classloader:\/META-INF\/jruby.home\/lib\/ruby/
+      lp.should =~ /^uri:classloader:\/\/?WEB-INF\/classes|uri:classloader:\/META-INF\/jruby.home\/lib\/ruby/
     end
   end
 end
