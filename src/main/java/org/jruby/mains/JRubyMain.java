@@ -1,5 +1,6 @@
 package org.jruby.mains;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,15 +54,29 @@ public class JRubyMain extends Main {
         }
         catch (Throwable t) {
             // print out as a nice Ruby backtrace
-            System.err.println(ThreadContext
-                    .createRawBacktraceStringFromThrowable(t));
+            System.err.println(createRawBacktraceStringFromThrowable(t));
             while ((t = t.getCause()) != null) {
                 System.err.println("Caused by:");
-                System.err.println(ThreadContext
-                        .createRawBacktraceStringFromThrowable(t));
+                System.err.println(createRawBacktraceStringFromThrowable(t));
             }
             System.exit(1);
         }
+    }
+
+    private static String createRawBacktraceStringFromThrowable(Throwable t) {
+	try {
+	    return ThreadContext.createRawBacktraceStringFromThrowable(t,
+								       false);
+	}
+	catch(NoSuchMethodError e) {
+	    try {
+		Method method = ThreadContext.class.getMethod("createRawBacktraceStringFromThrowable", Throwable.class);
+		return method.invoke(null, t).toString();
+	    }
+	    catch(Exception ee) {
+		return "can not produce raw stacktrace: " + ee.getMessage();
+	    }
+	}
     }
 
     JRubyMain(String bundleDisableSharedGems, String currentDirectory, String jrubyHome) {
