@@ -54,11 +54,11 @@ public class JRubyMain extends Main {
         catch (Throwable t) {
             // print out as a nice Ruby backtrace
             System.err.println(ThreadContext
-                    .createRawBacktraceStringFromThrowable(t));
+                    .createRawBacktraceStringFromThrowable(t, false));
             while ((t = t.getCause()) != null) {
                 System.err.println("Caused by:");
                 System.err.println(ThreadContext
-                        .createRawBacktraceStringFromThrowable(t));
+                        .createRawBacktraceStringFromThrowable(t, false));
             }
             System.exit(1);
         }
