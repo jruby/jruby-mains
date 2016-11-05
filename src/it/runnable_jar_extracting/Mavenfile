@@ -6,7 +6,7 @@ properties( 'jruby.main' => 'org.jruby.mains.ExtractingMain',
             'gem.home' => '${basedir}/../rubygems',
             'gem.path' => '${gem.home}',
             # default versions
-            'jruby.version' => '1.7.19',
+            'jruby.version' => '9.1.5.0',
             'bundler.version' => '1.9.2',
             'jruby.plugins.version' => '1.0.9' )
 
@@ -23,28 +23,26 @@ end
 
 files = [ 'config.ru', '*file', '*file.lock', '.jbundler/classpath.rb',
           'lib/**', 'app/**', 'config/**', 'vendor/**', 'spec/**' ]
-jruby_plugin!( :gem, :includeRubygemsInResources => true ) do
+jruby_plugin!( :gem, '1.0.10', :includeRubygemsInResources => true ) do
   execute_goals( 'generate-resources', 'process-resources', :includeBinStubs => true, :includeRubyResources => files )
 end
 
-if File.file?('Jarfile.lock')
-  plugin :dependency do
-    items = []
-    File.read( 'Jarfile.lock' ).each_line do |l|
-      data = l.sub(/-\ /, '').strip.split(':')
-      if data.size > 3
-        data = Hash[ [:groupId, :artifactId, :type, :version, :classifier].zip( data ) ]
-        data[ :outputDirectory ] = File.join( '${project.build.outputDirectory}/jars',
-                                              data[:groupId].gsub(/[.]/, '/'),
-                                              data[:artifactId],
-                                              data[:version] )
-        items << data
-      end
+plugin :dependency do
+  items = []
+  File.read( File.join(File.dirname(__FILE__), 'Jarfile.lock') ).each_line do |l|
+    data = l.sub(/-\ /, '').strip.split(':')
+    if data.size > 3
+      data = Hash[ [:groupId, :artifactId, :type, :version, :classifier].zip( data ) ]
+      data[ :outputDirectory ] = File.join( '${project.build.outputDirectory}/jars',
+                                            data[:groupId].gsub(/[.]/, '/'),
+                                            data[:artifactId],
+                                            data[:version] )
+      items << data
     end
-    execute_goal( :copy,
-                  :id => 'copy jar dependencies', :phase => 'prepare-package',
-                  :artifactItems => items )
   end
+  execute_goal( :copy,
+                :id => 'copy jar dependencies', :phase => 'prepare-package',
+                :artifactItems => items )
 end
 
 plugin :shade, '2.2' do
@@ -71,7 +69,7 @@ phase :'integration-test' do
                   :arguments => [ '-jar', 'runnable.jar', '-S', 'rake', '-T' ] )
 
     execute_goal( :exec, :id => 'rake spec',
-                  :arguments => [ '-jar', 'runnable.jar', '-S', 'rake', 'spec' ] )
+                  :arguments => [ '-Djruby.mains.keep_extracted=true', '-jar', 'runnable.jar', '-S', 'rake', 'spec' ] )
 
     execute_goal( :exec, :id => 'rspec',
                   :arguments => [ '-jar', 'runnable.jar', '-S', 'rspec' ] )

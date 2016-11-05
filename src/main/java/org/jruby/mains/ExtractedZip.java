@@ -51,15 +51,39 @@ public class ExtractedZip {
         else {
             unzip(zip);
         }
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            
-            @Override
-            public void run() {
-            }
-            
-        });
+	if (deleteExtractedFiles()) {
+	    Runtime.getRuntime().addShutdownHook(new Thread() {
+
+		    @Override
+		    public void run() {
+			try {
+			    Files.walkFileTree(target.toPath(), new DeleteDirectory());
+			} catch (IOException e) {
+			    e.printStackTrace();
+			}
+		    }
+		});
+	}
+	else {
+	    Runtime.getRuntime().addShutdownHook(new Thread() {
+
+		    @Override
+		    public void run() {
+			System.err.println("keeping extracted files are in: " + target);
+		    }
+		});
+	}
     }
-    
+
+    boolean deleteExtractedFiles() {
+	try {
+	    return ! "true".equals(System.getProperty("jruby.mains.keep_extracted"));
+	}
+	catch(Exception e ) {
+	    return true;
+	}
+    }
+
     File directory() {
         return target;
     }

@@ -10,19 +10,18 @@ describe "setup" do
   end
 
   it 'lives in the right home' do
-    java.io.File.new(Jars.home).canonical_path.should == java.io.File.new(Dir.pwd, 'jars').canonical_path
-    java.io.File.new(JRuby.runtime.jruby_home).canonical_path.should == java.io.File.new(Dir.pwd, 'META-INF/jruby.home').canonical_path
+    Jars.home.should == 'uri:classloader:/jars'
+    Dir.pwd.should == 'uri:classloader://'
   end
 
   it 'has the right load-path' do
-    pwd = java.io.File.new(Dir.pwd).canonical_path
     $LOAD_PATH.each do |lp|
-      java.io.File.new(lp).canonical_path.should =~ /^#{pwd}/
+      lp.should =~ /^uri:classloader:|runnable.jar!\//
     end
   end
 
   it 'uses the right jruby version' do
-    JRUBY_VERSION.should == '1.7.12'
+    JRUBY_VERSION.should == '1.7.25'
   end
 
 end

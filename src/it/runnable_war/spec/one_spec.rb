@@ -2,7 +2,7 @@ require 'jbundler'
 
 describe "something" do
   it "does something" do
-    $CLASSPATH.size.should == 4
+    $CLASSPATH.size.should == 6 #depends on the jruby used
     $CLASSPATH.each do |lp|
       lp.should =~ /^file:/
     end

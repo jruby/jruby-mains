@@ -3,7 +3,7 @@ require 'jbundler'
 describe "setup" do
 
   it "has the right classpath" do
-    $CLASSPATH.size.should == 6
+    $CLASSPATH.size.should == 4
     $CLASSPATH.each do |lp|
       lp.should =~ /^file:/
     end
@@ -19,6 +19,10 @@ describe "setup" do
     $LOAD_PATH.each do |lp|
       java.io.File.new(lp).canonical_path.should =~ /^#{pwd}/
     end
+  end
+
+  it 'uses the right jruby version' do
+    JRUBY_VERSION.should == '1.7.12'
   end
 
 end
