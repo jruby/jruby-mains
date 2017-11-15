@@ -2,7 +2,7 @@
 
 id 'org.jruby.mains:jruby-mains'
 
-version '0.6.0-SNAPSHOT'
+version '0.6.0'
 
 license :name => 'LGPL3'
 
