@@ -1,6 +1,6 @@
 #-*- mode: ruby -*-
 
-properties( 'jruby.main' => 'org.jruby.mains.JarMain', 
+properties( 'jruby.main' => 'org.jruby.mains.JarMain',
             'gem.home' => '${basedir}/../rubygems',
             'gem.path' => '${gem.home}',
             # default versions
@@ -40,11 +40,10 @@ phase :'integration-test' do
           } ) do
 
     execute_goal( :exec, :id => 'jar',
-                  :arguments => [ '-jar', 'runnable.jar' ] )
+                  :arguments => [ '-jar', 'runnable.jar', 'FIRST'] )
 
     execute_goal( :exec, :id => 'extracting jar',
-                  :arguments => [ '-cp', 'runnable.jar', 'org.jruby.mains.ExtractingMain' ] )
+                  :arguments => [ '-cp', 'runnable.jar', 'org.jruby.mains.ExtractingMain', 'SECOND' ] )
 
   end
 end
- 
